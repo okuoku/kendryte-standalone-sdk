@@ -4870,6 +4870,13 @@ int fpioa_set_function_raw(int number, fpioa_function_t function)
     return 0;
 }
 
+static inline unsigned int getchsel(uint8_t index)
+{
+    volatile fpioa_io_config_t* io;
+    io = fpioa->io;
+    return io[index].ch_sel;
+}
+
 int fpioa_set_function(int number, fpioa_function_t function)
 {
     uint8_t index = 0;
@@ -4884,7 +4891,7 @@ int fpioa_set_function(int number, fpioa_function_t function)
     /* Compare all IO */
     for(index = 0; index < FPIOA_NUM_IO; index++)
     {
-        if((fpioa->io[index].ch_sel == function) && (index != number))
+        if((getchsel(index) == function) && (index != number))
             fpioa_set_function_raw(index, FUNC_RESV0);
     }
     fpioa_set_function_raw(number, function);
@@ -4922,7 +4929,7 @@ int fpioa_get_io_by_function(fpioa_function_t function)
     int index = 0;
     for(index = 0; index < FPIOA_NUM_IO; index++)
     {
-        if(fpioa->io[index].ch_sel == function)
+        if(getchsel(index) == function)
             return index;
     }
 
