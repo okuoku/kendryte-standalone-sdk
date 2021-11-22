@@ -1,10 +1,9 @@
 #include <stdlib.h>
 #include <sys/lock.h>
 #include "bsp.h"
+#include "locks.h"
 
 #define LOCK_MAX_NUM (1024)
-
-typedef long _lock_t;
 
 typedef struct
 {
