@@ -52,14 +52,14 @@ static void iomem_set(void *s, uint8_t c, uint32_t num)
 static void iomem_init()
 {
     malloc_cortol.membase = (uint8_t *)((uintptr_t)_heap_line-0x40000000);
-    malloc_cortol.memsize = (uint32_t)_ioheap_line - (uint32_t)malloc_cortol.membase;
+    malloc_cortol.memsize = (uintptr_t)_ioheap_line - (uintptr_t)malloc_cortol.membase;
 
     malloc_cortol.memtblsize = malloc_cortol.memsize / IOMEM_BLOCK_SIZE;
     malloc_cortol.memmap = (uint16_t *)malloc(malloc_cortol.memtblsize * 2);
     mb();
 
     malloc_cortol.membase = (uint8_t *)((uintptr_t)_heap_line-0x40000000);
-    malloc_cortol.memsize = (uint32_t)_ioheap_line - (uint32_t)malloc_cortol.membase;
+    malloc_cortol.memsize = (uintptr_t)_ioheap_line - (uintptr_t)malloc_cortol.membase;
     malloc_cortol.memtblsize = malloc_cortol.memsize / IOMEM_BLOCK_SIZE;
 
     iomem_set(malloc_cortol.memmap, 0, malloc_cortol.memtblsize * 2);
