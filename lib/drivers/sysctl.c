@@ -1724,10 +1724,18 @@ uint32_t sysctl_set_spi0_dvp_data(uint8_t en)
 
 void sysctl_set_power_mode(sysctl_power_bank_t power_bank, sysctl_io_power_mode_t io_power_mode)
 {
+    union {
+        uint32_t word;
+        sysctl_power_sel_t sel;
+    } u;
+    u.sel = sysctl->power_sel;
+
     if(io_power_mode)
-        *((uint32_t *)(&sysctl->power_sel)) |= (1 << power_bank);
+        u.word |= (1 << power_bank);
     else
-        *((uint32_t *)(&sysctl->power_sel)) &= ~(1 << power_bank);
+        u.word &= ~(1 << power_bank);
+
+    sysctl->power_sel = u.sel;
 }
 
 uint32_t sysctl_pll_set_freq(sysctl_pll_t pll, uint32_t pll_freq)
